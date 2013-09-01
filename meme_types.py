@@ -1,7 +1,7 @@
 import os
 import sys
 
-meme_types = [
+meme_types_all = [
 
 	'success_kid',
 	'jesus_says',
@@ -60,3 +60,4 @@ meme_types = [
 	'super-cool-ski-instructor'
 
 ]
+meme_types = meme_types[:10]

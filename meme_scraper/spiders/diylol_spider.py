@@ -149,8 +149,7 @@ class DiyLolSpider (BaseSpider):
         if len(result) == 0:
             return None
         else:
-            return next_page_url = 'http://www.diylol.com' + result[0].extract ()
-        return next_page_url
+            return 'http://www.diylol.com' + result[0].extract ()
 
 
 
@@ -204,7 +203,6 @@ class DiyLolSpider (BaseSpider):
                 continue 
 
             new_meme = Meme (self.current_meme_name, top_text, bottom_text)
-            print new_meme
             self.memes[meme_type].append (new_meme)
 
 
