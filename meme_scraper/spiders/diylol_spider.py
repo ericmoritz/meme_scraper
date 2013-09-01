@@ -12,6 +12,7 @@ import time
 import csv
 
 #--- My Files ---
+sys.path.append ('../../')  #base-level directory
 from Meme import Meme
 
 
