@@ -14,6 +14,7 @@ import csv
 #--- My Files ---
 sys.path.append ('../../')  #base-level directory
 from Meme import Meme
+from meme_types import meme_types
 
 
 # Class: DiyLolSpider
@@ -37,10 +38,16 @@ class DiyLolSpider (BaseSpider):
     captions_filename = ''
 
     #--- Data Parameters ---
-    max_meme_instances = 100
+    max_meme_instances = 5000
 
     #--- Data ---
-    meme_types = ['success-kid']        #list of meme_types         
+    meme_types = [
+        'success-kid', 
+        'jesus-says', 
+        'high-expectations-asian-father',
+
+
+        ]        #list of meme_types         
     memes = {}                          #dict mapping meme_type -> list of Meme instances
 
 
@@ -63,6 +70,9 @@ class DiyLolSpider (BaseSpider):
     # ---------------------
     # starts up selenium and begins the requests and makes the appropriate directories
     def __init__ (self):
+
+        self.meme_types = meme_types
+        print self.meme_types
 
         ### Step 1: initialize instance lists for each meme_type ###
         for meme_type in self.meme_types:
@@ -131,11 +141,15 @@ class DiyLolSpider (BaseSpider):
     # Function: get_next_page_url
     # ---------------------------
     # given an htmlxpathselector, this will return an xpath to 
-    # the next page
+    # the next page. returns None if there are no more pages
     def get_next_page_url (self, hxs):
 
         next_page_url_xpath = '//a[@class="next_page"]/@href'
-        next_page_url = 'http://www.diylol.com' + hxs.select (next_page_url_xpath)[0].extract ()
+        result = hxs.select (next_page_url_xpath)
+        if len(result) == 0:
+            return None
+        else:
+            return next_page_url = 'http://www.diylol.com' + result[0].extract ()
         return next_page_url
 
 
@@ -195,7 +209,10 @@ class DiyLolSpider (BaseSpider):
 
 
         ### Step 7: return a request for the next page ###
-        return Request (url=self.get_next_page_url(hxs), meta=response.meta)
+        next_page_url = self.get_next_page_url (hxs)
+        if next_page_url != None:
+            return Request (url=self.get_next_page_url(hxs), meta=response.meta)
+
 
 
 
