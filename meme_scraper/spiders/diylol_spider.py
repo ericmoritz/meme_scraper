@@ -41,14 +41,8 @@ class DiyLolSpider (BaseSpider):
     max_meme_instances = 5000
 
     #--- Data ---
-    meme_types = [
-        'success-kid', 
-        'jesus-says', 
-        'high-expectations-asian-father',
-
-
-        ]        #list of meme_types         
-    memes = {}                          #dict mapping meme_type -> list of Meme instances
+    meme_types = []             #list of meme_types         
+    memes = {}                  #dict mapping meme_type -> list of Meme instances
 
 
     ########################################################################################################################
