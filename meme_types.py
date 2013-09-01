@@ -60,4 +60,4 @@ meme_types_all = [
 	'super-cool-ski-instructor'
 
 ]
-meme_types = meme_types[:10]
+meme_types = meme_types_all[:10]
