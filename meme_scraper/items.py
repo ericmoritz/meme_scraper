@@ -5,7 +5,15 @@
 
 from scrapy.item import Item, Field
 
-class MemeScraperItem(Item):
-    # define the fields for your item here like:
-    # name = Field()
-    pass
+
+# class: Meme_Item
+# ----------------
+# Item class to contain all information relevant to a single meme;
+# this will get converted into a Meme object in due time.
+class MemeItem (Item):
+
+	meme_type = Field ()
+	top_text = Field ()
+	bottom_text = Field ()
+
+	pass

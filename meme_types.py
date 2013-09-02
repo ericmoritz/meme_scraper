@@ -58,5 +58,4 @@ meme_types = [
 	'picard-wtf',
 	'good-guy-greg',
 	'super-cool-ski-instructor'
-
 ]

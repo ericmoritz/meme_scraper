@@ -38,7 +38,7 @@ class DiyLolSpider (BaseSpider):
     captions_filename = ''
 
     #--- Data Parameters ---
-    max_meme_instances = 5000
+    max_meme_instances = 10
 
     #--- Data ---
     meme_types = []             #list of meme_types         
@@ -80,6 +80,7 @@ class DiyLolSpider (BaseSpider):
 
         ### Step 1: pickle all meme instances ###
         for meme_type in self.meme_types:
+            print "---> Pickling " + meme_type
             self.pickle_meme_instances (meme_type)
 
 
@@ -168,7 +169,6 @@ class DiyLolSpider (BaseSpider):
 
         ### Step 2: make sure we are still under the limit for quantity - if not, pickle and leave ###
         if len(self.memes[meme_type]) > self.max_meme_instances:
-            self.pickle_meme_instances (meme_type)
             return
 
         ### Step 3: get an xpath selector for this entire page ###
@@ -183,6 +183,7 @@ class DiyLolSpider (BaseSpider):
         bottom_text_xpath   = './/h3[@class="post_line2"]/text()' 
 
         for image_div in image_divs:
+
             top_text = ''
             bottom_text = ''
 
@@ -196,8 +197,11 @@ class DiyLolSpider (BaseSpider):
             except: 
                 continue 
 
-            new_meme = Meme (self.current_meme_name, top_text, bottom_text)
-            self.memes[meme_type].append (new_meme)
+            meme_item = Meme_Item ()
+            meme_item['meme_type'] = meme_type
+            meme_item['top_text'] = top_text
+            meme_item['bottom_text'] = bottom_text
+
 
 
         ### Step 7: return a request for the next page ###
