@@ -20,7 +20,7 @@ from meme_types import meme_types
 class MemeScraperPipeline(object):
 
 	#--- Instance Variables ---
-	data_directory = os.path.join (os.getcwd(), '../data')		# location of the data directory
+	data_directory = os.path.join (os.getcwd(), 'data')		# location of the data directory
 	exporters = {}												# dict mapping meme_type -> exporters
 	files = {}
 	memes = defaultdict(lambda: [])								# dict mapping meme_type -> list of memes
