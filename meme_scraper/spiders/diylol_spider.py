@@ -2,14 +2,14 @@
 import os
 import sys 
 import pickle
+import time
+import csv
 
 #--- Scrapy ---
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request
-from selenium import selenium
-import time
-import csv
+from meme_scraper.items import Meme_Item
 
 #--- My Files ---
 sys.path.append ('../../')  #base-level directory
@@ -38,7 +38,7 @@ class DiyLolSpider (BaseSpider):
     captions_filename = ''
 
     #--- Data Parameters ---
-    max_meme_instances = 10
+    max_meme_instances = 5000
 
     #--- Data ---
     meme_types = []             #list of meme_types         
@@ -82,37 +82,6 @@ class DiyLolSpider (BaseSpider):
         for meme_type in self.meme_types:
             print "---> Pickling " + meme_type
             self.pickle_meme_instances (meme_type)
-
-
-    # Function: pickle_meme_instances
-    # -------------------------------
-    # pickles the list of all meme objects
-    def pickle_meme_instances (self, meme_type):
-
-        pickle_filename = self.get_pickle_filename (meme_type)
-        pickle.dump (self.memes[meme_type], open(pickle_filename, 'w'))
-        print '---> Destructor: pickled ' + meme_type + 'instances at ' + pickle_filename
-
-
-
-
-
-
-
-
-
-    ########################################################################################################################
-    ###################[ --- Filename Transformation Utilities --- ]########################################################
-    ########################################################################################################################
-
-    # Function: get_pickle_filename
-    # -----------------------------
-    # given a meme name, this returns the name (full filepath) of the file where
-    # you should pickle the list of all instances of it.
-    def get_pickle_filename (self, meme_type):
-
-        return os.path.join (self.data_directory, meme_type + '_instances.pkl')
-
 
 
 
@@ -182,6 +151,7 @@ class DiyLolSpider (BaseSpider):
         top_text_xpath      = './/h3[@class="post_line1"]/text()'
         bottom_text_xpath   = './/h3[@class="post_line2"]/text()' 
 
+        meme_items = []
         for image_div in image_divs:
 
             top_text = ''
@@ -201,13 +171,18 @@ class DiyLolSpider (BaseSpider):
             meme_item['meme_type'] = meme_type
             meme_item['top_text'] = top_text
             meme_item['bottom_text'] = bottom_text
+            meme_items.append (meme_item)
 
 
 
         ### Step 7: return a request for the next page ###
+        return_objects = []
+        return_objects += meme_items
         next_page_url = self.get_next_page_url (hxs)
         if next_page_url != None:
-            return Request (url=self.get_next_page_url(hxs), meta=response.meta)
+            return_objects.append( Request (url=self.get_next_page_url(hxs), meta=response.meta))
+
+        return return_objects
 
 
 

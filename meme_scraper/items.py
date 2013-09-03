@@ -10,7 +10,7 @@ from scrapy.item import Item, Field
 # ----------------
 # Item class to contain all information relevant to a single meme;
 # this will get converted into a Meme object in due time.
-class MemeItem (Item):
+class Meme_Item (Item):
 
 	meme_type = Field ()
 	top_text = Field ()
