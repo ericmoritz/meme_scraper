@@ -4,6 +4,7 @@ import sys
 import pickle
 import time
 import csv
+from collections import defaultdict
 
 #--- Scrapy ---
 from scrapy.spider import BaseSpider
@@ -13,7 +14,6 @@ from meme_scraper.items import Meme_Item
 
 #--- My Files ---
 sys.path.append ('../../')  #base-level directory
-from Meme import Meme
 from meme_types import meme_types
 
 
@@ -41,8 +41,8 @@ class DiyLolSpider (BaseSpider):
     max_meme_instances = 5000
 
     #--- Data ---
-    meme_types = []             #list of meme_types         
-    memes = {}                  #dict mapping meme_type -> list of Meme instances
+    meme_types      = []                                 #list of meme_types         
+    meme_counts     = defaultdict(lambda: 0)      #dict mapping meme_type -> number of instances gathered
 
 
     ########################################################################################################################
@@ -66,11 +66,9 @@ class DiyLolSpider (BaseSpider):
     def __init__ (self):
 
         self.meme_types = meme_types
-        print self.meme_types
-
-        ### Step 1: initialize instance lists for each meme_type ###
+        print "##### Scraping Meme Types: #####"
         for meme_type in self.meme_types:
-            self.memes[meme_type] = []
+            print " " + meme_type
 
         
     # Function: destructor
@@ -136,10 +134,6 @@ class DiyLolSpider (BaseSpider):
         ### Step 1: get the meme_type ###
         meme_type = response.meta['meme_type']
 
-        ### Step 2: make sure we are still under the limit for quantity - if not, pickle and leave ###
-        if len(self.memes[meme_type]) > self.max_meme_instances:
-            return
-
         ### Step 3: get an xpath selector for this entire page ###
         hxs = HtmlXPathSelector(response)
         
@@ -172,6 +166,7 @@ class DiyLolSpider (BaseSpider):
             meme_item['top_text'] = top_text
             meme_item['bottom_text'] = bottom_text
             meme_items.append (meme_item)
+            self.meme_counts[meme_type] += 1
 
 
 

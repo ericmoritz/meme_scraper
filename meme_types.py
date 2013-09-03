@@ -3,8 +3,8 @@ import sys
 
 meme_types = [
 
-	'success_kid',
-	'jesus_says',
+	'success-kid',
+	'jesus-says',
 	'high-expectations-asian-father',
 	'socially-awkward-penguin',
 	'business-cat',
@@ -32,7 +32,7 @@ meme_types = [
 	'advice-god',
 	'grandma-finds-the-internet',
 	'scumbag-steve',
-	'helpful-tyler-durdan',
+	'helpful-tyler-durden',
 	'troll-face',
 	'hipster-ariel',
 	'redneck-randal',
@@ -56,6 +56,6 @@ meme_types = [
 	'third-world-success-kid',
 	'confession-bear',
 	'picard-wtf',
-	'good-guy-greg',
+	'good-guy-greg--9',
 	'super-cool-ski-instructor'
 ]

@@ -15,7 +15,6 @@ from scrapy.contrib.exporter import JsonItemExporter
 
 #--- My Files ---
 sys.path.append (os.path.join(os.getcwd(), '../'))  #base-level directory
-from Meme import Meme
 from meme_types import meme_types
 
 class MemeScraperPipeline(object):
