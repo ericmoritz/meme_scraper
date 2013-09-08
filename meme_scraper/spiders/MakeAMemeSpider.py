@@ -96,16 +96,17 @@ class MakeAMemeSpider (MemeSpider):
         meme_urls = hxs.select (meme_urls_xpath).extract ()
 
         ### Step 4: generate requests for each of the individual memes ###
-        requests = []
-        for meme_url in meme_urls:
-            full_url = 'http://makeameme.org' + meme_url
-            requests.append (Request(url=full_url, meta={'meme_type':meme_type}, callback=self.parse_meme_page))
+        if len(meme_urls) == 0:
+            return
+        else:
+            requests = []
+            for meme_url in meme_urls:
+                full_url = 'http://makeameme.org' + meme_url
+                requests.append (Request(url=full_url, meta={'meme_type':meme_type}, callback=self.parse_meme_page))
 
-        ### Step 5: generate a request for the next page of memes ###
-        requests.append (Request(url=self.get_next_page_url(meme_type), meta={'meme_type':meme_type}))
-
-
-        return requests
+            ### Step 5: generate a request for the next page of memes ###
+            requests.append (Request(url=self.get_next_page_url(meme_type), meta={'meme_type':meme_type}))
+            return requests
 
 
     # Function: parse_meme_page
