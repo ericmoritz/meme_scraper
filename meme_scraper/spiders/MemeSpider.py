@@ -66,7 +66,7 @@ class MemeSpider (BaseSpider):
     # sets up the filenames to read from/write to
     def set_filenames (self):
 
-        self.base_directory         = os.path.join (os.getcwd (), '../../')
+        self.base_directory         = os.getcwd()
         self.data_directory         = os.path.join (self.base_directory, 'data/' + str(self.name))
         self.meme_types_filename    = os.path.join (self.data_directory, 'meme_types.txt')
 

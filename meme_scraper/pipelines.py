@@ -87,6 +87,7 @@ class MemeScraperPipeline(object):
 
 		return os.path.join (self.data_directory, meme_type + '_instances.json')
 
+
 	# Function: initialize_exporters
 	# ------------------------------
 	# initializes exporters for every meme type
@@ -128,6 +129,7 @@ class MemeScraperPipeline(object):
 
 		print_status ("Pipeline", "Processing item")
 		meme_type = item['meme_type']
-		self.exporters[meme_type].export_item (item)
+		print item
+		# self.exporters[meme_type].export_item (item)
 		return item
 

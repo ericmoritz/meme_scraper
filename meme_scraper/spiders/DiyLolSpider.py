@@ -90,6 +90,7 @@ class DiyLolSpider (MemeSpider):
     # links to each individual meme instance's page.
     def parse (self, response):
 
+
         ### Step 1: get the meme_type ###
         meme_type = response.meta['meme_type']
 

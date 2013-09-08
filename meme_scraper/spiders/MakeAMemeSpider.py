@@ -113,6 +113,8 @@ class MakeAMemeSpider (MemeSpider):
     # parses a page dedicated to a specific meme
     def parse_meme_page (self, response):
         
+        print_status ("Spider", "Parse meme Page")
+
         meme_type = response.meta['meme_type']
 
         hxs = HtmlXPathSelector (response)
