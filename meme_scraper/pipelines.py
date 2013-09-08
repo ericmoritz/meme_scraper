@@ -14,32 +14,50 @@ from scrapy import signals
 from scrapy.contrib.exporter import JsonItemExporter
 
 #--- My Files ---
-sys.path.append (os.path.join(os.getcwd(), '../'))  #base-level directory
-from meme_types import meme_types
+from spiders.common_utilities import print_welcome, print_message, print_error, print_status, print_inner_status
+
 
 class MemeScraperPipeline(object):
 
-	#--- Instance Variables ---
-	data_directory = os.path.join (os.getcwd(), 'data')		# location of the data directory
-	exporters = {}												# dict mapping meme_type -> exporters
-	files = {}
-	memes = defaultdict(lambda: [])								# dict mapping meme_type -> list of memes
+	#--- Filenames ---
+	base_directory 			= None
+	data_directory 			= None
+
+	#--- Data ---
+	site_name = None
+	exporters = {}									# dict mapping meme_type -> exporters
+	files = {}										# list of json files
+	memes = defaultdict(lambda: [])					# dict mapping meme_type -> list of memes
 	meme_types = []
+
+
 
 	####################################################################################################
 	###############[ --- Constructor/Destructor ---]################################################################
 	####################################################################################################
+
+	# Function: initialize_values
+	# ---------------------------
+	# copies over values from the spider
+	def initialize_values (self, spider):
+
+		self.site_name 	= spider.name
+		self.meme_types = spider.meme_types
+		self.base_directory = spider.base_directory
+		self.data_directory = spider.data_directory
+
 
 	# Function: open_spider
 	# ---------------------
 	# gets called when spider is open (basically a constructor)
 	def open_spider (self, spider):
 
-		print "---> Pipeline: open_spider"
-		self.meme_types = meme_types
+		### Step 1: set meme_types and data_directory straight ###
+		print_status ("Pipeline", "Initializing values")
+		self.initialize_values (spider)
 
-		### Step 1: initialize the exporters ###
-		print "---> Pipeline: initialize exporters"		
+		### Step 2: initialize exporters ###
+		print_status ("Pipeline", "Initializing exporters")
 		self.initialize_exporters ()
 
 
@@ -48,10 +66,12 @@ class MemeScraperPipeline(object):
 	# gets called when the spider is closed (basically a destructor)
 	def close_spider (self, spider):
 
-		print "---> Pipelie: close_spider"
-
 		### Step 1: finalize exporters ###
+		print_status ("Pipeline", "Finalize exporters")
 		self.finalize_exporters ()
+
+
+
 
 
 
@@ -106,12 +126,8 @@ class MemeScraperPipeline(object):
 	# converts the item in to a Meme object, stores it
 	def process_item(self, item, spider):
 
-		print "---> Pipeline: process_item"
+		print_status ("Pipeline", "Processing item")
 		meme_type = item['meme_type']
 		self.exporters[meme_type].export_item (item)
 		return item
 
-
-    	### Step 1: construct meme object, append to appropriate list ###
-    	# new_meme = Meme (item['meme_type'], item['top_text'], item['bottom_text'])
-    	# self.memes[item['meme_type']].append (item['top_text'])
