@@ -129,7 +129,6 @@ class MemeScraperPipeline(object):
 
 		print_status ("Pipeline", "Processing item")
 		meme_type = item['meme_type']
-		print item
-		# self.exporters[meme_type].export_item (item)
+		self.exporters[meme_type].export_item (item)
 		return item
 
